@@ -1,0 +1,37 @@
+.about-container2{
+    height: 30rem;
+    width: 40rem;
+    border: 2px solid #1F191B;
+    background-color: #E5E5E5;
+    z-index: 11;
+    position: relative;
+}
+.about-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+}
+.about-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 45%;
+    margin-top: -1rem;
+}
+.about-head2{
+    font-size: 3rem;
+    border-bottom: 2px solid #1F191B;
+
+}
+.about-content2{
+    margin-left: 1.5rem;
+    font-size: 1.5rem;
+    margin-top: -1.5rem;
+    text-align: center;
+}
+.close-btn{
+    margin-top: -6rem;
+    margin-right: -1px;
+    background-color: #1F191B;
+}

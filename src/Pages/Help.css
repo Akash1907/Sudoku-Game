@@ -1,0 +1,35 @@
+.Help-container2{
+    height: 30rem;
+    width: 40rem;
+    border: 2px solid #1F191B;
+    background-color: #E5E5E5;
+}
+.Help-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3px;
+}
+.Help-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 45%;
+    margin-top: -1rem;
+}
+.Help-head2{
+    font-size: 3rem;
+    border-bottom: 2px solid #1F191B;
+
+}
+.Help-content2{
+    margin-left: 1.5rem;
+    font-size: 1.5rem;
+    margin-top: -1.5rem;
+    text-align: center;
+}
+.close-btn{
+    margin-top: -6rem;
+    margin-right: -1px;
+    background-color: #1F191B;
+}

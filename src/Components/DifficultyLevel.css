@@ -1,0 +1,34 @@
+.diffLevel{
+    display: flex;
+    justify-content: center;
+    margin-top: 4rem;
+}
+.diffHead2{
+    font-size: 4rem;
+    background-color: #1F191B;
+    color: white;
+    padding: 10px;
+    display: inline;
+    border-radius: 15px;
+    letter-spacing: 5px;
+}
+.diffHead{
+    padding-bottom: 2rem;
+}
+.diffs{
+    margin: 2rem;
+}
+.diffs2{
+    text-align: center;
+    border: 4px solid #1F191B;
+    background-color: #E5E5E5;
+    padding: 10px;
+    font-size: 2rem;
+    border-radius: 15px;
+    margin-top: -20px;
+    color: #1F191B;
+}
+.diffs2:hover{
+    background-color: #1F191B;
+    color: #E5E5E5;
+}

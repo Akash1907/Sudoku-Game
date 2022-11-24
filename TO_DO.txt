@@ -1,0 +1,7 @@
+1. Timer should be zero when clicked on reset button
+
+1. Can't delete elements after entering
+
+2. Color grey
+
+3. Submit page
