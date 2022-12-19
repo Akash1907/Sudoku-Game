@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+
+.scorePage-container{
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    display: flex;
+    justify-content: start;
+    gap: 14rem;
+}
+.logop{
+    height: 6rem;
+    width: 18rem;
+}
+.score-header{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 21.4rem;
+}
+.score-img{
+    height: 13rem;
+    width: 20rem;
+}
+.score-board-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.completed-container{
+    margin-top: 0rem;
+}
+.five-star{
+    height: 10rem;
+    width: 28rem;
+}
+.completed{
+    height: 7rem;
+    width: 28rem;
+}
+.inside-score-container{
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 8px solid #5C5C5C;
+    /* padding: 4rem; */
+    height: 22rem;
+    width: 25rem;
+    margin-top: -3rem;
+    border-radius: 15px;
+}
+.avatar-img{
+    margin-top: 0rem;
+    height: 8rem;
+    width: 8rem;
+}
+.player-name{
+    display: grid;
+    grid-template-columns : auto auto;
+    /* flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: rem;
+    margin-bottom: 1rem;
+    text-align: end;
+    gap: 4rem;
+
+}
+.player-name2{
+    /* margin-top: -1rem; */
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+}
+.user-name{
+    font-family: 'Bangers', cursive;
+    font-size:1.5rem;
+    color: #5C5C5C;
+}
+.score-display{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    margin-left: -1.8rem;
+    margin-top: -3rem;
+}
+.score-display:hover{
+}
+.score-display2{
+    position: relative;
+}
+.onlyScore{
+    font-family: 'Bangers', cursive;
+    font-size:1.5rem;
+    color: #5C5C5C;
+    margin-left: -1rem;
+}
+.coin-img{
+    height: 2.8rem;
+    width: 2.8rem;
+}
+.main-score2{ 
+    background-color: #5C5C5C;
+    border-radius: 15px;
+    font-family: 'Bangers', cursive;
+    font-size:1.5rem;
+    padding: .3rem 3rem;
+    /* z-index: -2; */
+    /* position: absolute; */
+}
+.main-score{
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    z-index: -3;
+}
+.replay-btn2{
+    height: 3rem;
+    width: 7rem;
+    background-color:#5C5C5C;
+    border-radius: 15px;
+    font-size: 2rem;
+    font-family: 'Bangers', cursive;
+    color: white;
+}
+.replay-btn2:hover{
+    border: 4px solid black;
+    background-color: white;
+    color: black;
+}
+.leaderboard-banner{
+    background-color: #5C5C5C;
+    margin: 2rem;
+    margin-top: 4rem;
+    border-radius: 15px;
+}
+.leaderboard{
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 3.5rem;
+    font-family: 'Bangers', cursive;
+}
+.top-scorer{
+    display: grid;
+    /* grid: auto / auto auto auto auto;     */
+    grid-template-columns : 2rem 3rem auto 3rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
+    border-radius: 15px;
+    border: 4px solid black;
+    margin-bottom: 1rem;
+    padding-left: 4rem;
+    padding-right: 4rem;
+    grid-gap: 10rem;
+    text-align: center;
+    transition: all .2s ease-in-out;
+}
+.top-scorer:hover{
+    transform: scale(1.05);
+
+}
+.avatar-leader-img{
+    height: 6rem;
+    width: 6rem;
+}
+.leader-score-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding-right: 4rem;
+}
+.rank{
+    font-size: 2rem;
+    font-family: 'Bangers', cursive;
+}
+.player-leader-name{
+    font-size: 2rem;
+    font-family: 'Bangers', cursive;
+}
+.player-leader-score{
+    font-size: 2rem;
+    font-family: 'Bangers', cursive;
+}

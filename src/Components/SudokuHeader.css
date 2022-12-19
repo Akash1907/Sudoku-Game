@@ -1,8 +1,7 @@
-.sudokuPage-container{
+.sudokuPage-header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
     margin-top: 1rem;
     margin-left: 2rem;
     margin-right: 2rem;
@@ -10,9 +9,9 @@
 }
 
 .logooo{
-    margin-left: -2rem;
     height: 10rem;
     width: 30rem;
+    margin-left: -.5rem;
 }
 .res-score{
     display: flex;
@@ -29,10 +28,55 @@
     text-align: center;
 }
 .timer-container{
-    /* margin-left: -10rem; */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 1rem;
+}
 
+@media only screen and (max-width: 768px)
+{
+    .timer{
+        height: 2rem;
+        width: 3.7rem;
+        font-size: 1.5rem;
+        border-radius: 10px;
+    }
+    .sudokuPage-header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+        margin-left: 0rem;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        gap: 1rem;
+    }
+    .logooo{
+        /* margin-left: -.5rem; */
+        max-height: 5rem;
+        max-width: 12rem;
+    }
+    .timer-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .res-score{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: .3rem;
+    }
+    .btn{
+        height: 2.5rem;
+        width: 4.5rem;
+        font-size: 1.5rem;
+        border-radius: 10px;
+    }
+    .again{
+        display: none;
+    }
 }
