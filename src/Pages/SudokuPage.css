@@ -17,9 +17,7 @@ input{
 input:disabled{
     color: rgb(122, 122, 122);
 }
-.checkInput{
-    background-color: red;
-}
+
 .sudoku-container{
     display: flex;
     justify-content: flex-end;

@@ -1,0 +1,15 @@
+.gameOver-img{
+    position: absolute;
+    z-index: 5;
+    height: 15%;
+    width: 33%;
+    margin-top: 33%;
+}
+.gameOver-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.audioFile{
+    display: none;
+}

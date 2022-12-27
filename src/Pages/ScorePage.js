@@ -87,8 +87,11 @@ function ScorePage() {
                   </div>
                 </div>
               </div>
+              <div className= 'lead-container'>
+              <a href= '#leaderboard'><button className= 'lead-btn'>LEADERBOARD</button></a>
+              </div>
             </div>
-            <div className="leaderboard-container">
+            <div className="leaderboard-container" id= 'leaderboard'>
               <div className="leaderboard-banner">
                 <p className="leaderboard">LEADERBOARD</p>
               </div>

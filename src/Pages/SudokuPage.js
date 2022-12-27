@@ -1,22 +1,33 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SudokuHeader from "../Components/SudokuHeader";
-import {useNavigate,Outlet,Link } from 'react-router-dom';
+import { useNavigate, Outlet, Link } from "react-router-dom";
 import "./SudokuPage.css";
 import Confetti from "../Components/Confetti";
+import GameOver from "../Components/GameOver";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import { TransitionProps } from "@mui/material/transitions";
 
-
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & { children: React.ReactElement<any, any> },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function SudokuPage(props) {
-
   const [sudokuArr, setSudokuArr] = useState(getDeepCopy(props.initial));
 
   function getDeepCopy(arr) {
     return JSON.parse(JSON.stringify(arr));
   }
- 
+
   function onInputChange(e, row, col) {
-    var tempArray = [];
-    let rowCol = []
     var val = parseInt(e.target.value) || -1;
     var grid = getDeepCopy(sudokuArr);
     if (val === -1 || (val >= 1 && val <= 9)) {
@@ -25,18 +36,10 @@ function SudokuPage(props) {
     setSudokuArr(grid);
     let sudoku = getDeepCopy(props.initial);
     solver(sudoku);
-    if(val !== sudoku[row][col])
-    {
-      alert('you are doing wrong');
-      rowCol = [row,col];
-      tempArray.push(rowCol);
-    }
-    else if(val == sudoku[row][col])
-    {
-      alert('you are doing right');
-    }
-    console.log(tempArray);
-
+      
+          var arr = store;
+          let filteredArr = arr.filter((el) => !(el[0] === row && el[1] === col));
+          setStore(filteredArr);   
   }
 
   function checkRow(grid, row, num) {
@@ -45,7 +48,7 @@ function SudokuPage(props) {
 
   //check  num is unique in column
   function checkCol(grid, col, num) {
-    return grid.map(row => row[col]).indexOf(num) === -1;
+    return grid.map((row) => row[col]).indexOf(num) === -1;
   }
 
   //check num is uniques in box
@@ -109,40 +112,46 @@ function SudokuPage(props) {
     grid[row][col] = -1;
     return false;
   }
-  
+
   const [checkSolve, setCheckSolve] = useState(false);
   function solveSudoku() {
-    alert('Are you sure?')
+    alert("Are you sure?");
     let sudoku = getDeepCopy(props.initial);
     solver(sudoku);
     setSudokuArr(sudoku);
     setCheckSolve(true);
+    setStore([]);
   }
 
   //funtion to reset the sudoku
   function resetSudoku() {
-    // alert('Are You Sure?')
     let sudoku = getDeepCopy(props.initial);
+    let sudokuArray = getDeepCopy(sudokuArr);
+    if(sudokuArr === sudoku)
+    {
+      alert('Your sudoku is already');
+    }
+    else
+    {
+    alert('Are You Sure?')
+    }
     setSudokuArr(sudoku);
     setSeconds(0);
     setMinutes(0);
+    setHour(0);
     setCheckSolve(false);
-    // setCheckIn(false);
+    setStore([]);
   }
   //funtion to compare sudoku
-  function compareSudoku(currentSudoku, solvedSudoku){
+  function compareSudoku(currentSudoku, solvedSudoku) {
     let res = {
       isComplete: true,
-      isSolvable: true
-    }
-    for(let i=0; i<9; i++)
-    {
-      for(var j=0; j<9; j++)
-      {
-        if(currentSudoku[i][j] !== solvedSudoku[i][j])
-        {
-          if(currentSudoku[i][j] !== -1)
-          {
+      isSolvable: true,
+    };
+    for (let i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        if (currentSudoku[i][j] !== solvedSudoku[i][j]) {
+          if (currentSudoku[i][j] !== -1) {
             res.isSolvable = false;
           }
           res.isComplete = false;
@@ -152,134 +161,144 @@ function SudokuPage(props) {
     return res;
   }
 
-  // const[checkIn, setCheckIn] = useState(false);
-  // var checkIn = getDeepCopy(sudokuArr);
-  // var checkIn = new Array(2);
-  // checkIn.fill = false;
-  // const[checkinput, setCheckInput] = useState(objInput);
-  // var objInput = {};
-
-  // function checkInput(e,row, col){
-  //   var val = parseInt(e.target.value) || -1;
-  //   let sudoku = getDeepCopy(props.initial);
-  //   solver(sudoku);
-  //       if(val !== sudoku[row][col])
-  //       {
-  //         // setCheckIn(true);
-  //         // checkIn[row][col] = true;
-  //         alert('you are doing wrong');
-  //         objInput = {row,col}
-  //       }
-  //       else if(val == sudoku[row][col])
-  //       {
-  //         // setCheckIn(false);
-  //         // checkIn[row][col] = false;
-  //         alert('you are doing right');
-  //       }
-  // }
   //function to check the sudoku is valid or not
-  function checkSudoku(){
+  function checkSudoku() {
     let sudoku = getDeepCopy(props.initial);
     solver(sudoku);
     let compare = compareSudoku(sudokuArr, sudoku);
-    if(compare.isComplete)
-    {
-      alert('Congratulations! You have completely solved the sudoku')
-    }
-    else if (compare.isSolvable)
-    {
-      alert('Keep Going');
-    }
-    else
-    alert("Sudoku can't be solved, Try Again!");
+    if (compare.isComplete) {
+      alert("Congratulations! You have completely solved the sudoku");
+    } else if (compare.isSolvable) {
+      alert("Keep Going");
+    } else alert("Sudoku can't be solved, Try Again!");
   }
 
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [hour, setHour] = useState(0);
   var timer;
-    useEffect(() =>{
-       timer = setInterval(() =>{
-      setSeconds(seconds+1);
-      if(seconds === 59){
-        setMinutes(minutes+1);
+  useEffect(() => {
+    timer = setInterval(() => {
+      setSeconds(seconds + 1);
+      if (seconds === 59) {
+        setMinutes(minutes + 1);
         setSeconds(0);
       }
-    },1000)    
-    return ()=> clearInterval(timer)
-  })
-
+      if (minutes == 59) {
+        setHour(hour + 1);
+        setMinutes(0);
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  });
 
   let check;
-  function clickSubmit(){
-    
+  function clickSubmit() {
     let sudoku = getDeepCopy(props.initial);
     solver(sudoku);
     let compare = compareSudoku(sudokuArr, sudoku);
-    if(!compare.isComplete)
-    {
+    if (!compare.isComplete) {
       check = true;
-    }
-    else {
+    } else {
       check = false;
     }
   }
-   
-  
+
   var score;
   function setScore() {
-    var min = minutes
+    var min = minutes;
     var sec = seconds;
-    if(!checkSolve)
-    {
-      score = (props.score)-((min*10) + Math.floor(sec/10));
-    }
-    else
-    score = 0;
+    if (!checkSolve) {
+      score = props.score - (min * 10 + Math.floor(sec / 10));
+    } else score = 0;
   }
   setScore();
 
-  const[triggerConfetti, setTriggerConfetti] = useState(false);
+  const [triggerConfetti, setTriggerConfetti] = useState(false);
+  const [triggerGameOver, setTriggerGameOver] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleSubmit = (event) => {
     clickSubmit();
-    if(check)
-    {
-      alert('Your SUDOKU is either not completed or is wrong, Keep Trying!');
+    incorrectInput();
+    if (check) {
+      setOpen(true);
+    } else {
+      if(!checkSolve)
+      {
+        setTriggerConfetti(!triggerConfetti)
+        setTimeout(() => {
+          event.preventDefault();
+          console.log("User-Score:", score);
+          fetch("https://scores-data-58325-default-rtdb.firebaseio.com/.json", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userScore: score,
+              userName: "anonymous",
+            }),
+          }).then(() => NavigateToScore());
+        }, 3500);
+      }
+      else if(checkSolve)
+      {
+        setTriggerGameOver(!triggerGameOver);
+        setTimeout(() => {
+          event.preventDefault();
+          console.log("User-Score:", score);
+          fetch("https://scores-data-58325-default-rtdb.firebaseio.com/.json", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userScore: score,
+              userName: "anonymous",
+            }),
+          }).then(() => NavigateToScore());
+        }, 1700);
+      }
+      
     }
-    else
+  };
+
+  const navigate = useNavigate();
+  const NavigateToScore = () => {
+    navigate("/scores");
+  };
+
+  const [store, setStore] = useState([]);
+  function incorrectInput() {
+    let sudoku = getDeepCopy(props.initial);
+    solver(sudoku);
+    for(var i =0; i<9; i++)
     {
-      setTriggerConfetti(!triggerConfetti);
-      setTimeout(() =>{
-        event.preventDefault()
-      console.log('User-Score:', score)
-      fetch('https://scores-data-58325-default-rtdb.firebaseio.com/.json',
-          {
-              method : 'POST',
-              headers : {'Content-Type' : 'application/json'},
-              body : JSON.stringify(
-                  {
-                      userScore : score,
-                      userName : 'anonymous'
-                  }
-              )
-          }
-      ).then(() => NavigateToScore())
-      },3500);
+      for(var j=0; j<9; j++)
+      {
+        if (sudokuArr[i][j] !== sudoku[i][j] && sudokuArr[i][j] !== -1) {
+          let rowCol = [i, j];
+          var arr = store;
+          arr.push(rowCol);
+          setStore(arr);
+        } 
+      }
     }
-}
-
-const navigate=useNavigate();
- const NavigateToScore=()=>{
-  navigate('/scores');
- }
-//  function checkInputBorder(){
-
-//  }
+  }
+  function checkWrong(row,col) {
+    let containsElement = store.some((el) => el[0] === row && el[1] === col);
+    return containsElement;
+  }
   return (
     <>
-      <SudokuHeader clickSolve ={solveSudoku} clickHint = {checkSudoku} minutes = {minutes} seconds = {seconds} resetSudoku = {resetSudoku}/>
-      {triggerConfetti && <Confetti/>}
-      
-      
+      <SudokuHeader
+        clickHint={checkSudoku}
+        minutes={minutes}
+        seconds={seconds}
+        hour={hour}
+        resetSudoku={resetSudoku}
+      />
+      {triggerConfetti && <Confetti />}
+      {triggerGameOver && <GameOver/>}
       <div className="sudoku-container">
         <div className="App-header">
           <table>
@@ -294,9 +313,10 @@ const navigate=useNavigate();
                       return (
                         <td
                           key={rIndex + cIndex}
-                          className={(col + 1) % 3 === 0 ? "rBorder" : "" }
+                          className={(col + 1) % 3 === 0 ? "rBorder" : ""}
                         >
-                          <input  autoComplete="off" 
+                          <input
+                            autoComplete="off"
                             onChange={(e) => onInputChange(e, row, col)}
                             value={
                               sudokuArr[row][col] === -1
@@ -304,9 +324,21 @@ const navigate=useNavigate();
                                 : sudokuArr[row][col]
                             }
                             id="cellInput"
+                            style={
+                              checkWrong(row, col)
+                                ? { boxShadow: "inset 0 0 10px red" }
+                                : { borderColor: "black" }
+                            }
                             disabled={props.initial[row][col] !== -1}
-                            className = {(row <=2 && col <=2) || ((col <= 8 && col > 5) && row <=2) || ((col >=3  && col <= 5) && (row >=3  && row <= 5)) || (col <= 2   && row > 5) || (col > 5   && row > 5)? 'colorId' : ''}
-                            // className = {checkIn[row][col] ?'checkInput':""}
+                            className={
+                              (row <= 2 && col <= 2) ||
+                              (col <= 8 && col > 5 && row <= 2) ||
+                              (col >= 3 && col <= 5 && row >= 3 && row <= 5) ||
+                              (col <= 2 && row > 5) ||
+                              (col > 5 && row > 5)
+                                ? "colorId"
+                                : ""
+                            }
                           />
                         </td>
                       );
@@ -318,13 +350,30 @@ const navigate=useNavigate();
           </table>
         </div>
         <div className="submit-btn">
-        <Link to="/">
-          <button className="btn">REPLAY</button>
-        </Link>          
-        <button className="btn" onClick={handleSubmit}>SUBMIT</button> 
+          <button className="btn" onClick={solveSudoku}>
+            SOLVE
+          </button>
+          <div>
+      <Button variant="outlined" onClick={handleSubmit} sx = {{fontFamily: 'Bebas Neue',backgroundColor: '#1F191B', color: "white", height: '3.5rem', width: '9rem', fontSize: '2rem', borderRadius: '15px', '&:hover': {
+       background: "white", color: 'black', border: '4px solid black',fontWeight: '600'
+    }}}>
+        SUBMIT
+      </Button>
+      <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Your SUUDOKU is either not completed or wrong. Keep Trying!"}</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose}>OKAY</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
         </div>
       </div>
-      <Outlet/>
     </>
   );
 }
