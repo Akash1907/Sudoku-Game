@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SudokuHeader from "../Components/SudokuHeader";
-import { useNavigate, Outlet, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./SudokuPage.css";
 import Confetti from "../Components/Confetti";
 import GameOver from "../Components/GameOver";
@@ -12,6 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children: React.ReactElement<any, any> },
@@ -36,11 +37,12 @@ function SudokuPage(props) {
     setSudokuArr(grid);
     let sudoku = getDeepCopy(props.initial);
     solver(sudoku);
-      
-          var arr = store;
-          let filteredArr = arr.filter((el) => !(el[0] === row && el[1] === col));
-          setStore(filteredArr);   
+    var arr = store;
+    let filteredArr = arr.filter((el) => !(el[0] === row && el[1] === col));
+    setStore(filteredArr);
+    // checkHint(e);
   }
+
 
   function checkRow(grid, row, num) {
     return grid[row].indexOf(num) === -1;
@@ -127,13 +129,10 @@ function SudokuPage(props) {
   function resetSudoku() {
     let sudoku = getDeepCopy(props.initial);
     let sudokuArray = getDeepCopy(sudokuArr);
-    if(sudokuArr === sudoku)
-    {
-      alert('Your sudoku is already');
-    }
-    else
-    {
-    alert('Are You Sure?')
+    if (sudokuArr === sudoku) {
+      alert("Your sudoku is already");
+    } else {
+      alert("Are You Sure?");
     }
     setSudokuArr(sudoku);
     setSeconds(0);
@@ -142,6 +141,7 @@ function SudokuPage(props) {
     setCheckSolve(false);
     setStore([]);
   }
+
   //funtion to compare sudoku
   function compareSudoku(currentSudoku, solvedSudoku) {
     let res = {
@@ -162,16 +162,16 @@ function SudokuPage(props) {
   }
 
   //function to check the sudoku is valid or not
-  function checkSudoku() {
-    let sudoku = getDeepCopy(props.initial);
-    solver(sudoku);
-    let compare = compareSudoku(sudokuArr, sudoku);
-    if (compare.isComplete) {
-      alert("Congratulations! You have completely solved the sudoku");
-    } else if (compare.isSolvable) {
-      alert("Keep Going");
-    } else alert("Sudoku can't be solved, Try Again!");
-  }
+  // function checkSudoku() {
+  //   let sudoku = getDeepCopy(props.initial);
+  //   solver(sudoku);
+  //   let compare = compareSudoku(sudokuArr, sudoku);
+  //   if (compare.isComplete) {
+  //     alert("Congratulations! You have completely solved the sudoku");
+  //   } else if (compare.isSolvable) {
+  //     alert("Keep Going");
+  //   } else alert("Sudoku can't be solved, Try Again!");
+  // }
 
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -226,13 +226,12 @@ function SudokuPage(props) {
     if (check) {
       setOpen(true);
     } else {
-      if(!checkSolve)
-      {
-        setTriggerConfetti(!triggerConfetti)
+      if (!checkSolve) {
+        setTriggerConfetti(!triggerConfetti);
         setTimeout(() => {
           event.preventDefault();
           console.log("User-Score:", score);
-          fetch("https://scores-data-58325-default-rtdb.firebaseio.com/.json", {
+          fetch("https://sudoku-score-default-rtdb.firebaseio.com/.json", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -241,14 +240,12 @@ function SudokuPage(props) {
             }),
           }).then(() => NavigateToScore());
         }, 3500);
-      }
-      else if(checkSolve)
-      {
+      } else if (checkSolve) {
         setTriggerGameOver(!triggerGameOver);
         setTimeout(() => {
           event.preventDefault();
           console.log("User-Score:", score);
-          fetch("https://scores-data-58325-default-rtdb.firebaseio.com/.json", {
+          fetch("https://sudoku-score-default-rtdb.firebaseio.com/.json", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -258,10 +255,9 @@ function SudokuPage(props) {
           }).then(() => NavigateToScore());
         }, 1700);
       }
-      
     }
   };
-
+// console.log(score);
   const navigate = useNavigate();
   const NavigateToScore = () => {
     navigate("/scores");
@@ -271,34 +267,68 @@ function SudokuPage(props) {
   function incorrectInput() {
     let sudoku = getDeepCopy(props.initial);
     solver(sudoku);
-    for(var i =0; i<9; i++)
-    {
-      for(var j=0; j<9; j++)
-      {
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
         if (sudokuArr[i][j] !== sudoku[i][j] && sudokuArr[i][j] !== -1) {
           let rowCol = [i, j];
           var arr = store;
           arr.push(rowCol);
           setStore(arr);
-        } 
+        }
       }
     }
   }
-  function checkWrong(row,col) {
+  function checkWrong(row, col) {
     let containsElement = store.some((el) => el[0] === row && el[1] === col);
     return containsElement;
   }
+
+
+  function checkHint(row, col){
+    var mainOut = [];
+    var colArray = [];
+    var rowArray  = [];
+    if(props.initial[row][col] === -1)
+    {
+      for(let i=0; i<9; i++)
+      {
+        rowArray.push(sudokuArr[row][i]);
+      }
+      for(let i=0; i<9; i++)
+      {
+        colArray.push(sudokuArr[i][col]);
+      }
+      for(let i=0; i<9; i++)
+      {
+        let flag = false;
+        for(let j=0; j<9; j++)
+        {
+          if((rowArray[j] === (i+1)) || (colArray[j] === (i+1)))
+          {
+            flag = true;
+          }
+        }
+        if(flag != true)
+        {
+          mainOut.push(i+1);
+        }
+      }
+    }
+    return mainOut;
+  }
+  
+
   return (
     <>
       <SudokuHeader
-        clickHint={checkSudoku}
+        // clickHint={checkSudoku}
         minutes={minutes}
         seconds={seconds}
         hour={hour}
         resetSudoku={resetSudoku}
       />
       {triggerConfetti && <Confetti />}
-      {triggerGameOver && <GameOver/>}
+      {triggerGameOver && <GameOver />}
       <div className="sudoku-container">
         <div className="App-header">
           <table>
@@ -323,12 +353,14 @@ function SudokuPage(props) {
                                 ? ""
                                 : sudokuArr[row][col]
                             }
+
                             id="cellInput"
                             style={
                               checkWrong(row, col)
-                                ? { boxShadow: "inset 0 0 10px red" }
+                                ? { boxShadow: "inset 0 0 10px red"}
                                 : { borderColor: "black" }
                             }
+                            placeholder = {checkHint(row, col)}
                             disabled={props.initial[row][col] !== -1}
                             className={
                               (row <= 2 && col <= 2) ||
@@ -354,25 +386,44 @@ function SudokuPage(props) {
             SOLVE
           </button>
           <div>
-      <Button variant="outlined" onClick={handleSubmit} sx = {{fontFamily: 'Bebas Neue',backgroundColor: '#1F191B', color: "white", height: '3.5rem', width: '9rem', fontSize: '2rem', borderRadius: '15px', '&:hover': {
-       background: "white", color: 'black', border: '4px solid black',fontWeight: '600'
-    }}}>
-        SUBMIT
-      </Button>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Your SUUDOKU is either not completed or wrong. Keep Trying!"}</DialogTitle>
-        <DialogActions>
-          <Button onClick={handleClose}>OKAY</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+            <Button
+              variant="outlined"
+              onClick={handleSubmit}
+              sx={{
+                fontFamily: "Bebas Neue",
+                backgroundColor: "#1F191B",
+                color: "white",
+                height: "3.5rem",
+                width: "9rem",
+                fontSize: "2rem",
+                borderRadius: "15px",
+                "&:hover": {
+                  background: "white",
+                  color: "black",
+                  border: "4px solid black",
+                  fontWeight: "600",
+                },
+              }}
+            >
+              SUBMIT
+            </Button>
+            <Dialog
+              open={open}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
+              aria-describedby="alert-dialog-slide-description"
+            >
+              <DialogTitle>
+                {"Your SUUDOKU is either not completed or wrong. Keep Trying!"}
+              </DialogTitle>
+              <DialogActions>
+                <Button onClick={handleClose}>OKAY</Button>
+              </DialogActions>
+            </Dialog>
+          </div>
         </div>
+        {/* <button className = 'hint-btn' onClick = {(e)=>{checkHint(e)}}>Hint</button> */}
       </div>
     </>
   );

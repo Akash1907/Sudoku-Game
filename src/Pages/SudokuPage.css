@@ -15,7 +15,7 @@ input{
     color: darkblue;
 }
 input:disabled{
-    color: rgb(122, 122, 122);
+    color: rgb(73, 73, 73);
 }
 
 .sudoku-container{
@@ -51,7 +51,10 @@ td{
 .rBorder{
     border-right: 2px solid black;
 }
-
+input::placeholder{
+    font-size: 12px;
+    justify-content: space-between;
+}
 
 @media only screen and (max-width: 768px){
     #cellInput{

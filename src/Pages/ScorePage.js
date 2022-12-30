@@ -18,7 +18,7 @@ function ScorePage() {
   const [scores, setScores] = useState([]);
   const getScores = async () => {
     const response = await fetch(
-      "https://scores-data-58325-default-rtdb.firebaseio.com/.json"
+      "https://sudoku-score-default-rtdb.firebaseio.com/.json"
     );
     const data = await response.json();
     setScores(data);
