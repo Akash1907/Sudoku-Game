@@ -28,6 +28,7 @@ function SudokuPage(props) {
     return JSON.parse(JSON.stringify(arr));
   }
 
+
   function onInputChange(e, row, col) {
     var val = parseInt(e.target.value) || -1;
     var grid = getDeepCopy(sudokuArr);
@@ -41,6 +42,8 @@ function SudokuPage(props) {
     let filteredArr = arr.filter((el) => !(el[0] === row && el[1] === col));
     setStore(filteredArr);
     // checkHint(e);
+    setIsFocused(true);
+
   }
 
 
@@ -140,7 +143,8 @@ function SudokuPage(props) {
     setHour(0);
     setCheckSolve(false);
     setStore([]);
-  }
+    setDisplayHint(false); 
+   }
 
   //funtion to compare sudoku
   function compareSudoku(currentSudoku, solvedSudoku) {
@@ -253,7 +257,7 @@ function SudokuPage(props) {
               userName: "anonymous",
             }),
           }).then(() => NavigateToScore());
-        }, 1700);
+        }, 1800);
       }
     }
   };
@@ -283,7 +287,10 @@ function SudokuPage(props) {
     return containsElement;
   }
 
-
+  const [displayHint, setDisplayHint] = useState(false);
+  function clickHint(){
+    setDisplayHint(!displayHint);
+  }
   function checkHint(row, col){
     var mainOut = [];
     var colArray = [];
@@ -316,6 +323,30 @@ function SudokuPage(props) {
     }
     return mainOut;
   }
+
+  const [isFocused, setIsFocused] = useState(false);
+   const numbers = [0, 1, 5];
+  const myStyles = {
+    1: {left: "0px"},
+    2: {left: "20px" },
+    3: {left: "40px" },
+    4: {left: "40px", top: '18px'},
+    5: {left: "40px", top: '35px'},
+    6: {left: "20px", top: '35px'},
+    7: {left: "0px", top: '35px'},
+    8: {left: "0px", top: '18px'},
+    9: {left: "20px", top: '18px'}
+  };
+
+  // function handleFocus() {
+  //   setIsFocused(true);
+  // }
+
+  function handleBlur() {
+    setIsFocused(false);
+  }
+
+  
   
 
   return (
@@ -330,6 +361,7 @@ function SudokuPage(props) {
       {triggerConfetti && <Confetti />}
       {triggerGameOver && <GameOver />}
       <div className="sudoku-container">
+        <button className = 'btn' id = "hintBtn" onClick = {clickHint}>HINT</button>
         <div className="App-header">
           <table>
             <tbody>
@@ -345,6 +377,7 @@ function SudokuPage(props) {
                           key={rIndex + cIndex}
                           className={(col + 1) % 3 === 0 ? "rBorder" : ""}
                         >
+                        <div className= 'input-wrapper'>
                           <input
                             autoComplete="off"
                             onChange={(e) => onInputChange(e, row, col)}
@@ -360,7 +393,6 @@ function SudokuPage(props) {
                                 ? { boxShadow: "inset 0 0 10px red"}
                                 : { borderColor: "black" }
                             }
-                            placeholder = {checkHint(row, col)}
                             disabled={props.initial[row][col] !== -1}
                             className={
                               (row <= 2 && col <= 2) ||
@@ -371,7 +403,22 @@ function SudokuPage(props) {
                                 ? "colorId"
                                 : ""
                             }
+                            onFocus={onInputChange}
+                            onBlur={handleBlur}                          
                           />
+                          {displayHint ? 
+                            (sudokuArr[row][col] === -1
+                            ? ""
+                            : sudokuArr[row][col]) === "" &&
+                            Object.entries(myStyles).map(([key, style]) => (
+                              checkHint(row, col).includes(parseInt(key)) ? 
+                              <div key={key} style={style}>
+                                <div>{key}</div>
+                              </div> : ""
+                          )) : ""}
+                          
+                        </div>
+                         
                         </td>
                       );
                     })}
@@ -415,7 +462,7 @@ function SudokuPage(props) {
               aria-describedby="alert-dialog-slide-description"
             >
               <DialogTitle>
-                {"Your SUUDOKU is either not completed or wrong. Keep Trying!"}
+                {"Your SUDOKU is either not completed or wrong. Keep Trying!"}
               </DialogTitle>
               <DialogActions>
                 <Button onClick={handleClose}>OKAY</Button>
@@ -423,7 +470,6 @@ function SudokuPage(props) {
             </Dialog>
           </div>
         </div>
-        {/* <button className = 'hint-btn' onClick = {(e)=>{checkHint(e)}}>Hint</button> */}
       </div>
     </>
   );

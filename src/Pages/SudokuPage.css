@@ -55,7 +55,25 @@ input::placeholder{
     font-size: 12px;
     justify-content: space-between;
 }
-
+#hintBtn{
+    margin-top: 28rem;
+}
+.input-wrapper {
+    position: relative;
+  }
+  .input-wrapper div{
+    position: absolute;
+    top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  pointer-events: none;
+  z-index: 5;
+  margin: 2px;
+  font-size: 10px;
+  color: #6d6c6c;
+}
 @media only screen and (max-width: 768px){
     #cellInput{
         width: 30px;
